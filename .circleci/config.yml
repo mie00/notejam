@@ -9,10 +9,6 @@ jobs:
           key: deps2-{{ .Branch }}-{{ checksum "flask/requirements.txt" }}
       - run:
           command: |
-            sudo apt-get update
-            sudo apt-get install libmysqlclient-dev
-      - run:
-          command: |
             cd flask
             virtualenv .env
             source .env/bin/activate
