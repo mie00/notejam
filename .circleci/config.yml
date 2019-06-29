@@ -20,11 +20,11 @@ jobs:
       - save_cache:
           key: v2-app-cache-{{ .Branch }}-{{ .Revision }}
           paths:
-            - 'flask'
+            - '.'
   docker:
     docker:
         - image: mie00/gke-kubeconfig
-    working_directory: /home/circleci/project/flask
+    working_directory: /home/circleci/project
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
