@@ -21,6 +21,17 @@ jobs:
           key: v2-app-cache-{{ .Branch }}-{{ .Revision }}
           paths:
             - '.'
+  test:
+    docker:
+      - image: circleci/python:2
+    steps:
+      - restore_cache:
+          key: v2-app-cache-{{ .Branch }}-{{ .Revision }}
+      - run:
+          command: |
+            cd flask
+            source .env/bin/activate
+            python tests.py
   docker:
     docker:
         - image: mie00/gke-kubeconfig
@@ -46,7 +57,10 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - docker:
+      - test:
           requires:
             - build
+      - docker:
+          requires:
+            - test
 
