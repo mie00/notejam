@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:2
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps2-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          command: |
+            cd flask
+            virtualenv .env
+            source .env/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: deps2-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - 'flask/.env'
+      - run:
+          command: |
+            docker build -t mie00/notejam:latest .
+            docker push
