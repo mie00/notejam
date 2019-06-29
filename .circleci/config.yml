@@ -39,7 +39,7 @@ jobs:
       - run: docker push eu.gcr.io/${GCP_PROJECT}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BUILD_NUM}
       - run: mkdir -p /home/circleci/.kube
       - run: cat /home/circleci/gcp-key.json | gke-kubeconfig -cluster notejam -location us-central1-a -project ${GCP_PROJECT} > /home/circleci/.kube/config
-      - run: kubectl --kubeconfig=/home/circleci/.kube/config --namespace default kubectl image deployment notejam notejam=eu.gcr.io/${GCP_PROJECT}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BUILD_NUM}
+      - run: kubectl --kubeconfig=/home/circleci/.kube/config --namespace default set image deployment notejam notejam=eu.gcr.io/${GCP_PROJECT}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BUILD_NUM}
 
 workflows:
   version: 2
