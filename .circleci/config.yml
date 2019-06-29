@@ -17,11 +17,6 @@ jobs:
           key: deps2-{{ .Branch }}-{{ checksum "flask/requirements.txt" }}
           paths:
             - 'flask/.env'
-      - setup_remote_docker
-      - run:
-          command: |
-            docker build -t mie00/notejam:latest .
-            docker push
   docker:
     docker:
         - image: mie00/gke-kubeconfig
