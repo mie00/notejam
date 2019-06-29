@@ -22,3 +22,31 @@ jobs:
           command: |
             docker build -t mie00/notejam:latest .
             docker push
+  docker:
+    docker:
+        - image: mie00/gke-kubeconfig
+    working_directory: /home/circleci/app
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - restore_cache:
+          keys:
+            - v2-app-cache-{{ .Branch }}-{{ .Revision }}
+      - run: docker build --rm=false --tag=eu.gcr.io/${GCP_PROJECT}/${CIRCLE_PROJECT_REPONAME}:latest .
+
+      - run: echo ${GOOGLE_AUTH} > /home/circleci/gcp-key.json
+      - run: cat /home/circleci/gcp-key.json | docker login -u _json_key --password-stdin https://eu.gcr.io
+      - run: docker push eu.gcr.io/${GCP_PROJECT}/${CIRCLE_PROJECT_REPONAME}:latest
+      - run: mkdir -p /home/circleci/.kube
+      - run: cat /home/circleci/gcp-key.json | gke-kubeconfig -cluster cmndr -location us-central1-a -project ${GCP_PROJECT} > /home/circleci/.kube/config
+      - run: kubectl --kubeconfig=/home/circleci/.kube/config --namespace tayeh delete pod -l app=${CIRCLE_PROJECT_REPONAME#*-}
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - docker:
+          requires:
+            - build
+
