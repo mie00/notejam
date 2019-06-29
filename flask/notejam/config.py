@@ -4,7 +4,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     DEBUG = False
     TESTING = False
-    SERVER_NAME = '0.0.0.0:5000'
     SECRET_KEY = 'notejam-flask-secret-key'
     CSRF_ENABLED = True
     CSRF_SESSION_KEY = 'notejam-flask-secret-key'
