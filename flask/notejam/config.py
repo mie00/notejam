@@ -12,6 +12,9 @@ class Config(object):
 
 class ProductionConfig(Config):
     DEBUG = False
+    SECRET_KEY = os.environ['SECRET_KEY']
+    CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
+    SQLALCHEMY_DATABASE_URI = os.environ['SQLALCHEMY_DATABASE_URI']
 
 
 class DevelopmentConfig(Config):
