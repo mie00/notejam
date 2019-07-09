@@ -8,6 +8,7 @@ class Config(object):
     CSRF_ENABLED = True
     CSRF_SESSION_KEY = 'notejam-flask-secret-key'
     SQLALCHEMY_DATABASE_URI = 'mysql://notejam:tYoSZlT&Bf^YLn<HiuOj@mysql.storage/notejam'
+    LOG_LEVEL = 'INFO'
 
 
 class ProductionConfig(Config):
@@ -15,6 +16,7 @@ class ProductionConfig(Config):
     SECRET_KEY = os.environ.get('SECRET_KEY')
     CSRF_SESSION_KEY = os.environ.get('CSRF_SESSION_KEY')
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    LOG_LEVEL = os.environ.get('LOG_LEVEL') or 'INFO'
 
 
 class DevelopmentConfig(Config):
